@@ -7,6 +7,8 @@ const { User } = require('./models/User.js')
 const { Product } = require('./models/Product.js')
 const { Cart } = require('./models/cart.js')
 const { CartItem } = require('./models/cartItem.js')
+const {Order} = require ('./models/order.js')
+const {OrderItem} = require("./models/orderItem")
 require("dotenv").config();
 
 //console.log(process.env)
@@ -35,6 +37,9 @@ app.use("*",error404_all)
 User.hasOne(Cart);
 Cart.belongsTo(User);
 Product.belongsToMany(Cart,{through:CartItem})
+User.hasMany(Order);
+Product.belongsToMany(Order,{through:OrderItem})
+
 const PORT = 3000;
 sequelize.sync( /* {alter:true} */ )
 .then(()=>{

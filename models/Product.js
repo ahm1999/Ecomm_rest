@@ -3,11 +3,12 @@ const { DataTypes, Sequelize, Model } = require("sequelize");
 const { sequelize } = require("../util/database");
 
 class Product extends Model {
-  constructor(name, inStorage, description, imageUrl) {
+  constructor(name, inStorage, description, imageUrl,price) {
     super();((this.name = name)),
       (this.inStorage = inStorage),
       (this.description = description),
-      (this.imageUrl = imageUrl);
+      (this.imageUrl = imageUrl),
+      (this.price = price);
   }
 }
 Product.init(
@@ -31,6 +32,9 @@ Product.init(
     imageUrl: {
       type: DataTypes.TEXT,
     },
+    price:{
+      type:DataTypes.INTEGER
+    }
   },
   {
     sequelize,
