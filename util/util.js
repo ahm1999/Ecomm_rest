@@ -1,8 +1,9 @@
-const sendErrorResponse = (code, res, err_messege) => {
-  res.status(code).json({
-    status: "failed",
-    body: err_messege,
-  });
+const sendErrorResponse = (code, err_messege,next) => {
+
+  const error = new Error(err_messege)
+  error.statusCode = code
+  
+  next(error)
 };
 
 module.exports = { sendErrorResponse };

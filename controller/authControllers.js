@@ -15,14 +15,13 @@ const createAccount_POST = async (req, res, next) => {
 
   let missingValue = BodyObject.checkUndefined(bodyObject);
   if (missingValue) {
-    return sendErrorResponse(400, res, `missing value ${missingValue}`);
+    return sendErrorResponse(400, `missing value ${missingValue}`,next);
   }
   //checking if the values of password and the confirmed match
   if (bodyObject.password !== bodyObject.confirmedPassword) {
     return sendErrorResponse(
       400,
-      res,
-      "the password and confirmed password do not match"
+      "the password and confirmed password do not match",next
     );
   }
   let errors = validationResult(req);
@@ -37,7 +36,7 @@ const createAccount_POST = async (req, res, next) => {
 
     //checking the email if email already registered
     if (await User.email_registered(user_email)) {
-      return sendErrorResponse(409, res, "email already registered previosly");
+      return sendErrorResponse(409, "email already registered previosly",next);
     }
     //creating a value on the data base
     await user.save();
@@ -56,16 +55,16 @@ const logIn_POST = async (req, res, next) => {
   //check wether the body is valid
   let missingValue = BodyObject.checkUndefined(logIn_body);
   if (missingValue) {
-    return sendErrorResponse(400, res, `missing value ${missingValue}`);
+    return sendErrorResponse(400,  `missing value ${missingValue}`,next);
   }
   //check if email registered
 
   if (!(await User.email_registered(logIn_body.email))) {
-    return sendErrorResponse(404, res, `email or password are wrong`);
+    return sendErrorResponse(404, `email or password are wrong`,next);
   }
   let userId = await User.logIn_User(logIn_body.email, logIn_body.password);
   if (!(await userId)) {
-    return sendErrorResponse(404, res, `wrong password `);
+    return sendErrorResponse(404,  `wrong password `,next);
   }
   console.log(userId);
   jwt.sign(
