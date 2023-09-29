@@ -10,4 +10,8 @@ router.route('/signup')
 router.route('/login')
 .post(LogIn_bodyObject.checkValidity(),authControllers.logIn_POST)
 
+router.route('/adminLogIn')
+.post(LogIn_bodyObject.checkValidity(),authControllers.LogInAdmin_POST)
+
+
 module.exports = router 

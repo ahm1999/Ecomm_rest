@@ -45,6 +45,7 @@ class User extends Model {
     try {
       ret_User = await User.findOne({ where: { id: _id } });
       let user = ret_User.dataValues.name
+      
       if (!user) {
         return false}
 
@@ -56,9 +57,22 @@ class User extends Model {
     }
 
   }
+  static async getRole(_id){
+    try {
+      let ret_User = await User.findOne({ where: { id: _id } });
+      let role = ret_User.dataValues.name.role
+    if (!role) {
+        return false}
+
+    return role  
+
+  } catch (error) {
+    console.log(error)
+    
+  }
     
 
-}
+}}
 User.init(
   {
     id: {
