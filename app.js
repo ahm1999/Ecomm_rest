@@ -1,5 +1,6 @@
 const express = require("express");
 const { errorHandler } = require("./middlewares/errorHandler.js");
+const cors = require('cors')
 
 //database setup
 const {sequelize } = require('./util/database.js')
@@ -16,12 +17,13 @@ require("dotenv").config();
 //setup 
 const app = express();
 app.use(express.json())
+app.use(cors())
 //routes imports
 const {error404_all} =require('./middlewares/error404.js')
 const authRoutes = require ('./routers/authRoutes.js')
 const productRoutes = require('./routers/productsRoutes.js')
 const cartRoutes = require ('./routers/cartRoutes.js')
-
+const adminRoutes = require('./routers/AdminRoutes.js')
 app.get("/", (req, res, next) => {
   res
   .status(200)
@@ -30,6 +32,7 @@ app.get("/", (req, res, next) => {
 app.use("/prods",productRoutes)
 app.use('/auth',authRoutes)
 app.use("/Cart",cartRoutes)
+app.use('/admin',adminRoutes)
 app.use(errorHandler);
 //**************************
 app.use("*",error404_all)

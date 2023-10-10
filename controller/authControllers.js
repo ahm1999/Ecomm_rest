@@ -81,7 +81,6 @@ const logIn_POST = async (req, res, next) => {
 };
 const LogInAdmin_POST = async (req,res,next)=>{
   let logIn_body = new LogIn_bodyObject(req.body.email, req.body.password);
-  
   let missingValue = BodyObject.checkUndefined(logIn_body);
   if (missingValue) {
     return sendErrorResponse(400,  `missing value ${missingValue}`,next);

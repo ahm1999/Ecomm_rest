@@ -3,6 +3,10 @@ const { DataTypes, Sequelize, Model } = require("sequelize");
 const { sequelize } = require("../util/database");
 
 class Product extends Model {
+  /* updateValueById(_id){
+    Product.findByPk()
+  }  */
+
   constructor(name, inStorage, description, imageUrl,price) {
     super();((this.name = name)),
       (this.inStorage = inStorage),

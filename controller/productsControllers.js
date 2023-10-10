@@ -34,6 +34,44 @@ async function getProduct_GET(req,res,next) {
    
     
 }
+async function getAllProducts_GET(req,res,next){
+  let pageNo = 0
+  if (req.query.pageno>0) {
+    pageNo = req.query.pageno
+  }
+  try{
+    res.json({
+      status:"success",
+      data: await Product.findAndCountAll({raw:true,limit:10,offset:10*pageNo})
+    })
+  }catch (error){
+    return next(error)
+  }
+
+}
+
+const updateProduct_PATCH =  async (req,res,next) =>{
+  /* try {
+  if (Object.keys(req.body) === 0) {
+    return sendErrorResponse(400, res,"the request body is empty ")
+    
+  }
+  const cleanedBodyObject =  removeEmptyValues(req.body){
+  if (Object.keys(cleanedBodyObject).length === 0) {
+    return sendErrorResponse(400, res,"the request body is empty ")
+  } 
+  const _updated =  cleanedBodyObject
+    console.log(_updated);
+    const response =  await Product
+    .update({name:"changed"}
+           ,{where:{id:req.params.productId}})
+    return res.json({status:"the values have been updated",body: response })
+  } catch (error) {
+    return next(error)
+  } 
+  
+} */
+}
 class Product_BodyObject {
   constructor(name, inStorage, description, imageUrl,price) {
     (this.name = name),
@@ -43,5 +81,16 @@ class Product_BodyObject {
       (this.price = price);
   }
 }
+function removeEmptyValues(bodyObject) {
+  for (const key in bodyObject){
+    if (bodyObject[key] ===""|| bodyObject[key] === 0) {
+      delete bodyObject[key] 
+    }
 
-module.exports = {addProduct_POST,getProduct_GET};
+  }
+  return bodyObject
+  
+}
+
+
+module.exports = {addProduct_POST,getProduct_GET,getAllProducts_GET/* ,updateProduct_PATCH */}
