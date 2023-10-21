@@ -1,6 +1,6 @@
 const { Order } = require("../models/order");
 const { sequelize } = require("../util/database");
-
+const {catchAsync} = require("../util/catchAsync")
 const allOrders = async (req, res, next) => {
   let pageNo = 0
   if (req.query.pageno>0) {
