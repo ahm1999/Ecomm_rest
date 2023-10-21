@@ -19,7 +19,7 @@ class Order extends Model {
       order by 1`})
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
  
   }
@@ -39,7 +39,7 @@ class Order extends Model {
   where "OrderItems"."OrderId" = ?`,values:[(_id)]}) 
   return response;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
   }
   static async getOrderData(_pageNo){
@@ -56,7 +56,7 @@ class Order extends Model {
   /* User.findAll({raw:true,  include:{model:Order},where:{role:"User"}}) */
    return response; 
   } catch (error) {
-    console.log(error);
+    throw error;
   }
  }
  static async  createAfullOrder(decoded){

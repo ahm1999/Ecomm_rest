@@ -16,7 +16,7 @@ class User extends Model {
       ret_User = await User.findOne({ where: { email: _email } });
      // console.log(ret_User);
     } catch (error) {
-      console.log(error);
+      throw(error);
     }
     if (ret_User !== null) {
       return true;
@@ -38,7 +38,7 @@ class User extends Model {
       return ret_User.dataValues.name.id
 
     } catch (error) {
-      console.log(error);
+      throw(error);
     }}
   static async findById(_id){
     let ret_User
@@ -52,7 +52,7 @@ class User extends Model {
       return user
       
     } catch (error) {
-      console.log(error)
+      throw(error)
       
     }
 
@@ -67,7 +67,7 @@ class User extends Model {
     return role  
 
   } catch (error) {
-    console.log(error)
+    throw(error)
     
   }
     

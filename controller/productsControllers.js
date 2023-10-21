@@ -1,6 +1,8 @@
 const { Product } = require("../models/Product");
 const { BodyObject } = require("./authControllers");
 const {sendErrorResponse} = require('../util/util')
+const {catchAsync} = require("../util/catchAsync")
+
 async function addProduct_POST(req, res, next) {
   const product_BO = new Product_BodyObject(
     req.body.name,
@@ -11,7 +13,7 @@ async function addProduct_POST(req, res, next) {
   );
   let missingValue = BodyObject.checkUndefined(product_BO);
   if (missingValue) {
-    return sendErrorResponse(400, res, `missing value ${missingValue}`);
+    return sendErrorResponse(400, `missing value ${missingValue}`,next);
   }
   try {
     const product = new Product(product_BO.name,product_BO.inStorage,product_BO.description,product_BO.imageUrl,product_BO.price)
@@ -34,44 +36,36 @@ async function getProduct_GET(req,res,next) {
    
     
 }
-async function getAllProducts_GET(req,res,next){
+const getAllProducts_GET = catchAsync( async (req,res,next)=>{
   let pageNo = 0
   if (req.query.pageno>0) {
     pageNo = req.query.pageno
   }
-  try{
+  
     res.json({
       status:"success",
       data: await Product.findAndCountAll({raw:true,limit:10,offset:10*pageNo})
     })
-  }catch (error){
-    return next(error)
-  }
 
-}
+})
 
-const updateProduct_PATCH =  async (req,res,next) =>{
-  /* try {
-  if (Object.keys(req.body) === 0) {
-    return sendErrorResponse(400, res,"the request body is empty ")
-    
-  }
-  const cleanedBodyObject =  removeEmptyValues(req.body){
-  if (Object.keys(cleanedBodyObject).length === 0) {
-    return sendErrorResponse(400, res,"the request body is empty ")
-  } 
-  const _updated =  cleanedBodyObject
-    console.log(_updated);
-    const response =  await Product
-    .update({name:"changed"}
-           ,{where:{id:req.params.productId}})
-    return res.json({status:"the values have been updated",body: response })
-  } catch (error) {
-    return next(error)
-  } 
-  
-} */
+const updateProduct_PATCH = catchAsync( async (req,res,next) =>{
+
+const cleanedBodyObject =  removeEmptyValues(req.body)
+const _id =  req.params.productId
+
+if (Object.keys(cleanedBodyObject).length === 0) {
+    return sendErrorResponse(400, "the request body is empty ",next)
 }
+  const response = await Product.updateRecord(_id,cleanedBodyObject) 
+  return res.json({
+    status:"success",
+    data:response
+  })
+
+})
+//------------------------------------------------
+
 class Product_BodyObject {
   constructor(name, inStorage, description, imageUrl,price) {
     (this.name = name),
@@ -93,4 +87,4 @@ function removeEmptyValues(bodyObject) {
 }
 
 
-module.exports = {addProduct_POST,getProduct_GET,getAllProducts_GET/* ,updateProduct_PATCH */}
+module.exports = {addProduct_POST,getProduct_GET,getAllProducts_GET,updateProduct_PATCH}

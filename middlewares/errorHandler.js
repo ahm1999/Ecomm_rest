@@ -2,7 +2,10 @@
     console.log("Middleware Error Hadnling");
     const errStatus = err.statusCode || 500;
     const errMsg = err.message || 'Something went wrong';
-    res.status(errStatus).json({
+    if (err.name =='SequelizeDatabaseError'){
+       err.message = 'database error'
+    }
+    return res.status(errStatus).json({
         success: false,
         status: errStatus,
         message: errMsg,

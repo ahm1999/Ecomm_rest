@@ -43,12 +43,12 @@ Product.belongsToMany(Cart,{through:CartItem})
 User.hasMany(Order);
 Product.belongsToMany(Order,{through:OrderItem})
 
-const PORT = 3000;
+const PORT = 3005;
 sequelize.sync( /* {alter:true} */ )
 .then(()=>{
   app.listen(PORT,()=>{
     console.log(`listening on port ${PORT}`);
-
+ 
   });
 
 })
